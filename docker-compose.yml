@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build: .
+    ports:
+      - "8085:8080" # 👈 Mude de 8080:8080 para 8085:8080
+    environment:
+      - PORT=8080
+      - JWT_SECRET=minha_chave_secreta_super_segura_123
+      - USER_SERVICE_URL=http://user-service:80
+      - ORDER_SERVICE_URL=http://order-service:80
+    depends_on:
+      - user-service
+      - order-service
+
+  user-service:
+    image: kennethreitz/httpbin
+    ports:
+      - "8081:80"
+
+  order-service:
+    image: kennethreitz/httpbin
+    ports:
+      - "8082:80"
